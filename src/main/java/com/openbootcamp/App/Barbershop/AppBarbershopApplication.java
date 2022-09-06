@@ -8,12 +8,14 @@ import com.openbootcamp.App.Barbershop.repository.CitasRepository;
 import com.openbootcamp.App.Barbershop.repository.ClientesRepository;
 import com.openbootcamp.App.Barbershop.repository.EmpleadosRepository;
 import com.openbootcamp.App.Barbershop.repository.ServiciosRepository;
+import net.bytebuddy.asm.Advice;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.temporal.TemporalAdjusters;
 import java.util.List;
 
 @SpringBootApplication
@@ -21,6 +23,7 @@ public class AppBarbershopApplication {
 
     public static void main(String[] args) {
         ApplicationContext context = SpringApplication.run(AppBarbershopApplication.class, args);
+
 
         //CITA
         CitasRepository citasRepository = context.getBean(CitasRepository.class);
