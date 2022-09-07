@@ -11,8 +11,8 @@ import java.util.List;
 public interface CitasRepository extends JpaRepository <Citas, Long>{
 
     List<Citas> findAllByFechaBetween(LocalDateTime min, LocalDateTime max);
-    List<Citas> findAllByEmailcliente(String email);
-    List<Citas> findAllByDniEmpleado(String dni);
+    List<Citas> findAllByClienteEmail(String email);
+    List<Citas> findAllByEmpleadosDni(String dni);
 
-    List<Citas> findAllByPrecioServicioLessThanEqual(Double precio);
+    List<Citas> findAllByServiciosPrecioLessThanEqual(Double precio);
 }

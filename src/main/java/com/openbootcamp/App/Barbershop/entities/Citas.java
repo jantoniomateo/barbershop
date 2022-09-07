@@ -1,6 +1,5 @@
 package com.openbootcamp.App.Barbershop.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
@@ -33,7 +32,7 @@ public class Citas implements Serializable {
     // se da cuando tenemos listas en las relaciones. como no tenemos más listas en
     // otras clases estaría ya estaría.
 
-    // @JsonIgnore //ignor el cliente por completo
+    // @JsonIgnore //ignora el cliente por completo
     @JsonIgnoreProperties(value = "{citas}") // ignora atributos específicos del cliente.
     @ManyToOne  //muchas citas tienen un mismo cliente
     @JoinColumn(name = "cliente_id", foreignKey = @ForeignKey(name = "fk_citas_clientes"))

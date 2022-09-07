@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.time.Month;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,6 +35,21 @@ public class CitasController {
     @GetMapping("/citas")
     public List<Citas> findAll(){
         return servicioCitas.findAll();
+    }
+
+    @GetMapping("/citas/search/clientes/email/{email}")
+    public List<Citas> findAllByClienteEmail(@PathVariable String email){
+        return servicioCitas.findAllByClienteEmail(email);
+    }
+
+    @GetMapping("/citas/search/empleados/dni/{dni}")
+    public List<Citas> findAllByDniEmpleados(@PathVariable String dni){
+        return servicioCitas.findAllByDniEmpleados(dni);
+    }
+
+    @GetMapping("/citas/search/servicios/precio/{precio}")
+    public List<Citas> findAllByServiciosPrecioLessThanEqual(@PathVariable Double precio){
+        return servicioCitas.findAllByServiciosPrecioLessThanEqual(precio);
     }
 
     /**
@@ -95,12 +111,22 @@ public class CitasController {
     }
 
     @GetMapping("/citas/beneficios/{year}/{month}/{day}")
-    public ResponseEntity<BeneficiosDTO> beneficioPorDia(@PathVariable int year, @PathVariable int month, @PathVariable int day){
+    public ResponseEntity<BeneficiosDTO> calcularBeneficioPorDia(@PathVariable int year, @PathVariable int month, @PathVariable int day){
         double beneficios = servicioCitas.calcularBeneficioPorDia(LocalDate.of(year,month,day));
-        BeneficiosDTO beneficiosDTO = new BeneficiosDTO(beneficios,day,month,year);
+        BeneficiosDTO beneficiosDTO = new BeneficiosDTO(beneficios);
         return ResponseEntity.ok(beneficiosDTO);
 
     }
-    //public ResponseEntity<> beneficioPorMes(){}
-    //public ResponseEntity<> beneficioPorYear(){}
+    @GetMapping("/citas/beneficios/{year}/{month}")
+    public ResponseEntity<BeneficiosDTO> calcularBeneficioPorMes(@PathVariable int year, @PathVariable int month){
+        double beneficios = servicioCitas.calcularBeneficioPorMes(year, Month.of(month));
+        BeneficiosDTO beneficiosDTO = new BeneficiosDTO(beneficios);
+        return ResponseEntity.ok(beneficiosDTO);
+    }
+    @GetMapping("/citas/beneficios/{year}")
+    public ResponseEntity<BeneficiosDTO> calcularBeneficioPorYear(@PathVariable int year) {
+        double beneficios = servicioCitas.calcularBeneficioPorYear(year);
+        BeneficiosDTO beneficiosDTO = new BeneficiosDTO(beneficios);
+        return ResponseEntity.ok(beneficiosDTO);
+    }
 }

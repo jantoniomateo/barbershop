@@ -1,20 +1,19 @@
-package com.openbootcamp.App.Barbershop.service;
+package com.openbootcamp.App.Barbershop.service.impl;
 
 import com.openbootcamp.App.Barbershop.entities.Citas;
 import com.openbootcamp.App.Barbershop.repository.CitasRepository;
-import net.bytebuddy.asm.Advice;
+import com.openbootcamp.App.Barbershop.service.ServicioCitas;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
-import java.time.temporal.TemporalAdjusters;
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class ServicioCitasImpl implements ServicioCitas{
+public class ServicioCitasImpl implements ServicioCitas {
 
     private final CitasRepository citasRepository;
 
@@ -40,19 +39,19 @@ public class ServicioCitasImpl implements ServicioCitas{
         if (!StringUtils.hasLength(emailCliente) && !emailCliente.contains("@"))
             throw new IllegalArgumentException(("Email incorrecto"));
 
-        return citasRepository.findAllByEmailcliente(emailCliente);
+        return citasRepository.findAllByClienteEmail(emailCliente);
     }
 
     @Override
-    public List<Citas> findAllByDniEmpleado(String dni) {
+    public List<Citas> findAllByDniEmpleados(String dni) {
         if (!StringUtils.hasLength(dni))
             throw new IllegalArgumentException(("DNI Incorrecto"));
 
-        return citasRepository.findAllByDniEmpleado(dni);
+        return citasRepository.findAllByEmpleadosDni(dni);
     }
 
     @Override
-    public List<Citas> findAllByPrecioServicioLessThanEqual(Double precio) {
+    public List<Citas> findAllByServiciosPrecioLessThanEqual(Double precio) {
         //between
         //if (min == null || max == null || min <=0 || max<=0 || min > max )
         //    throw new IllegalArgumentException("Rango de precios incorrecto");
@@ -60,7 +59,7 @@ public class ServicioCitasImpl implements ServicioCitas{
         if (precio == null || precio <= 0)
             throw new IllegalArgumentException("Precio incorrecto");
 
-        return citasRepository.findAllByPrecioServicioLessThanEqual(precio);
+        return citasRepository.findAllByServiciosPrecioLessThanEqual(precio);
     }
 
     @Override
@@ -71,15 +70,14 @@ public class ServicioCitasImpl implements ServicioCitas{
         LocalDateTime min = dia.atTime(0,0);
         LocalDateTime max = dia.atTime(23,59);
 
-        /*List<Citas> citas = citasRepository.findAllByFechaBetween(min, max);
-        double beneficios = 0;
-        for (Citas cita: citas){
-            if (cita.getServicios() == null)
-                continue;
-
-            beneficios += cita.getServicios().getPrecio();
-        }
-        return beneficios;*/
+        //List<Citas> citas = citasRepository.findAllByFechaBetween(min, max);
+        //double beneficios = 0;
+        //for (Citas cita: citas){
+        //    if (cita.getServicios() == null)
+        //        continue;
+        //    beneficios += cita.getServicios().getPrecio();
+        //}
+        //return beneficios;
         return extraerBeneficios(citasRepository.findAllByFechaBetween(min, max));
     }
 

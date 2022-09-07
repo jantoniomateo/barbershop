@@ -76,6 +76,34 @@ public class AppBarbershopApplication {
         cita2.setEmpleados(empleado1);
         citasRepository.saveAll(List.of(cita1,cita2));
 
+        Servicios s1 = new Servicios(null,"Corte de pelo M",15.0,40);
+        Servicios s2 = new Servicios(null,"Corte de pelo F",30.0, 40);
+        Servicios s3 = new Servicios(null,"Corte de pelo M avance",20.0, 40);
+        Servicios s4 = new Servicios(null,"Corte de pelo San Valentín",20.0, 40);
+        serviciosRepository.saveAll(List.of(s1,s2,s3,s4));
+
+        Citas app1 = new Citas(null,LocalDateTime.of(2022,1,1,13,30),50,"");
+        app1.setServicios(s1);
+        app1.setCliente(cliente2);
+        citasRepository.save(app1);
+
+
+        Citas app2 = new Citas(null,LocalDateTime.of(2022,1,14,16,30),50,"");
+        app2.setServicios(s2);
+        app2.setCliente(cliente2);
+        citasRepository.save(app2);
+
+        Citas app3 = new Citas(null,LocalDateTime.of(2022,1,31,20,30),50,"");
+        app3.setServicios(s3);
+        citasRepository.save(app3);
+
+        Citas app4 = new Citas(null,LocalDateTime.of(2022,2,14,20,30),50,"");
+        app4.setServicios(s4);
+        citasRepository.save(app4);
+
+
+
+
     }
 
 }

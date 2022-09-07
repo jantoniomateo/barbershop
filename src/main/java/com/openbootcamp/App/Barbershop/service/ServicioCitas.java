@@ -16,9 +16,9 @@ public interface ServicioCitas {
     Optional<Citas> findById(Long id);
     List<Citas> findAll();
     List<Citas> findAllByClienteEmail(String emailCliente) throws IllegalArgumentException;
-    List<Citas> findAllByDniEmpleado(String dni);
+    List<Citas> findAllByDniEmpleados(String dni);
 
-    List<Citas> findAllByPrecioServicioLessThanEqual(Double precio);
+    List<Citas> findAllByServiciosPrecioLessThanEqual(Double precio);
     double calcularBeneficioPorDia(LocalDate dia);
     double calcularBeneficioPorMes(int year, Month mes); //Se indica la clase Month y se importa.
     double calcularBeneficioPorYear(int year);
