@@ -1,8 +1,8 @@
 package com.openbootcamp.App.Barbershop.service.impl;
 
-import com.openbootcamp.App.Barbershop.entities.Empleados;
-import com.openbootcamp.App.Barbershop.repository.EmpleadosRepository;
-import com.openbootcamp.App.Barbershop.service.ServicioEmpleados;
+import com.openbootcamp.App.Barbershop.entities.Empleado;
+import com.openbootcamp.App.Barbershop.repository.EmpleadoRepository;
+import com.openbootcamp.App.Barbershop.service.EmpleadoService;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -10,16 +10,16 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class ServicioEmpleadosImpl implements ServicioEmpleados {
+public class EmpleadoServiceImpl implements EmpleadoService {
 
-    private final EmpleadosRepository empleadosRepository;
+    private final EmpleadoRepository empleadosRepository;
 
-    public ServicioEmpleadosImpl(EmpleadosRepository empleadosRepository) {
+    public EmpleadoServiceImpl(EmpleadoRepository empleadosRepository) {
         this.empleadosRepository = empleadosRepository;
     }
 
     @Override
-    public Optional<Empleados> findById(Long id) {
+    public Optional<Empleado> findById(Long id) {
         if (id == null || id <= 0)
             return Optional.empty();
 
@@ -27,12 +27,12 @@ public class ServicioEmpleadosImpl implements ServicioEmpleados {
     }
 
     @Override
-    public List<Empleados> findAll() {
+    public List<Empleado> findAll() {
         return empleadosRepository.findAll();
     }
 
     @Override
-    public Empleados save(Empleados empleados) {
+    public Empleado save(Empleado empleados) {
         if (empleados == null || !StringUtils.hasLength(empleados.getEmail()))
             throw new IllegalArgumentException("Email incorrecto");
         return empleadosRepository.save(empleados);

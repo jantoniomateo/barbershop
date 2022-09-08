@@ -7,7 +7,7 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "empleados")
-public class Empleados implements Serializable {
+public class Empleado implements Serializable {
 
     // Atributos
     @Id
@@ -32,9 +32,9 @@ public class Empleados implements Serializable {
     @Column(name = "DNI", nullable = false, unique = true)
     private String dni;
 
-    public Empleados(){}
+    public Empleado(){}
 
-    public Empleados(Long id, String nombre, String apellidos, String email, LocalDate fechaNacimiento, String naf, String dni) {
+    public Empleado(Long id, String nombre, String apellidos, String email, LocalDate fechaNacimiento, String naf, String dni) {
         this.id = id;
         this.nombre = nombre;
         this.apellidos = apellidos;

@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "citas")
-public class Citas implements Serializable {
+public class Cita implements Serializable {
 
     //Atributos
     @Id
@@ -33,26 +33,26 @@ public class Citas implements Serializable {
     // otras clases estaría ya estaría.
 
     // @JsonIgnore //ignora el cliente por completo
-    @JsonIgnoreProperties(value = "{citas}") // ignora atributos específicos del cliente.
+    @JsonIgnoreProperties(value = {"citas"}) // ignora atributos específicos del cliente.
     @ManyToOne  //muchas citas tienen un mismo cliente
     @JoinColumn(name = "cliente_id", foreignKey = @ForeignKey(name = "fk_citas_clientes"))
-    private Clientes cliente;
+    private Cliente cliente;
 
     // servicio
     @ManyToOne  //muchas citas tienen un mismo servicio
     @JoinColumn(name = "servicios_id", foreignKey = @ForeignKey(name = "fk_citas_servicios"))  //determina el nombre de la columna de la relación en la BD.
-    private Servicios servicios;
+    private Servicio servicios;
 
     //empleados
     @ManyToOne  //muchas citas tiene un mismo empleado
     @JoinColumn(name = "empleado_id", foreignKey = @ForeignKey(name = "fk_citas_empleados"))
-    private Empleados empleados;
+    private Empleado empleados;
 
     //constructores
 
-    public Citas(){}
+    public Cita(){}
 
-    public Citas(Long id, LocalDateTime fecha, Integer duracion, String description) {
+    public Cita(Long id, LocalDateTime fecha, Integer duracion, String description) {
         this.id = id;
         this.fecha = fecha;
         this.duracion = duracion;
@@ -84,11 +84,11 @@ public class Citas implements Serializable {
         this.duracion = duracion;
     }
 
-    public Clientes getCliente() {
+    public Cliente getCliente() {
         return cliente;
     }
 
-    public void setCliente(Clientes cliente) {
+    public void setCliente(Cliente cliente) {
         this.cliente = cliente;
     }
 
@@ -100,19 +100,19 @@ public class Citas implements Serializable {
         this.description = description;
     }
 
-    public Servicios getServicios() {
+    public Servicio getServicios() {
         return servicios;
     }
 
-    public void setServicios(Servicios servicios) {
+    public void setServicios(Servicio servicios) {
         this.servicios = servicios;
     }
 
-    public Empleados getEmpleados() {
+    public Empleado getEmpleados() {
         return empleados;
     }
 
-    public void setEmpleados(Empleados empleados) {
+    public void setEmpleados(Empleado empleados) {
         this.empleados = empleados;
     }
 

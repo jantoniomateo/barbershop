@@ -1,21 +1,19 @@
 package com.openbootcamp.App.Barbershop;
 
-import com.openbootcamp.App.Barbershop.entities.Citas;
-import com.openbootcamp.App.Barbershop.entities.Clientes;
-import com.openbootcamp.App.Barbershop.entities.Empleados;
-import com.openbootcamp.App.Barbershop.entities.Servicios;
-import com.openbootcamp.App.Barbershop.repository.CitasRepository;
-import com.openbootcamp.App.Barbershop.repository.ClientesRepository;
-import com.openbootcamp.App.Barbershop.repository.EmpleadosRepository;
-import com.openbootcamp.App.Barbershop.repository.ServiciosRepository;
-import net.bytebuddy.asm.Advice;
+import com.openbootcamp.App.Barbershop.entities.Cita;
+import com.openbootcamp.App.Barbershop.entities.Cliente;
+import com.openbootcamp.App.Barbershop.entities.Empleado;
+import com.openbootcamp.App.Barbershop.entities.Servicio;
+import com.openbootcamp.App.Barbershop.repository.CitaRepository;
+import com.openbootcamp.App.Barbershop.repository.ClienteRepository;
+import com.openbootcamp.App.Barbershop.repository.EmpleadoRepository;
+import com.openbootcamp.App.Barbershop.repository.ServicioRepository;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.temporal.TemporalAdjusters;
 import java.util.List;
 
 @SpringBootApplication
@@ -26,13 +24,13 @@ public class AppBarbershopApplication {
 
 
         //CITA
-        CitasRepository citasRepository = context.getBean(CitasRepository.class);
-        Citas cita1 = new Citas(null, LocalDateTime.of(2022, 8, 24, 10, 30), 20, "corte de pelo con rapado lateral");
+        CitaRepository citasRepository = context.getBean(CitaRepository.class);
+        Cita cita1 = new Cita(null, LocalDateTime.of(2022, 8, 24, 10, 30), 20, "corte de pelo con rapado lateral");
         citasRepository.save(cita1);
 
 		//CLIENTE
-        ClientesRepository clientesRepository = context.getBean(ClientesRepository.class);
-        Clientes cliente1 = new Clientes(null, "Juan Antonio", "Mateo Heredia", "jantonio.mateo@outlook.es", LocalDate.of(1976, 2, 8));
+        ClienteRepository clientesRepository = context.getBean(ClienteRepository.class);
+        Cliente cliente1 = new Cliente(null, "Juan Antonio", "Mateo Heredia", "jantonio.mateo@outlook.es", LocalDate.of(1976, 2, 8));
 		clientesRepository.save(cliente1);
 
         //RELACIÓN CITAS - CLIENTES
@@ -40,21 +38,21 @@ public class AppBarbershopApplication {
         citasRepository.save(cita1);
 
         //ORDEN INVERSO  CLIENTES - CITAS (IMPORTANTE: Como Customer no es owner de la asociación entonces no se guarda en base de datos esa asociación )
-        Citas cita2 = new Citas(null, LocalDateTime.of(2022, 8, 24, 12, 5), 20, "Corte de pelo con cuello largo");
+        Cita cita2 = new Cita(null, LocalDateTime.of(2022, 8, 24, 12, 5), 20, "Corte de pelo con cuello largo");
         citasRepository.save(cita2);
-        Citas cita3 = new Citas(null, LocalDateTime.of(2022, 8, 24, 13, 20), 20, "corte de pelo con cuello corto");
+        Cita cita3 = new Cita(null, LocalDateTime.of(2022, 8, 24, 13, 20), 20, "corte de pelo con cuello corto");
         citasRepository.save(cita3);
 
-        Clientes cliente2 = new Clientes(null, "Juan Antonio", "Mateo Cordero", "jantonio.mateo@icloud.es", LocalDate.of(2000, 4, 10));
+        Cliente cliente2 = new Cliente(null, "Juan Antonio", "Mateo Cordero", "jantonio.mateo@icloud.es", LocalDate.of(2000, 4, 10));
         cliente2.getCitas().add(cita2);
         cliente2.getCitas().add(cita3);
         clientesRepository.save(cliente2);
 
 
         //SERVICIOS
-        ServiciosRepository serviciosRepository = context.getBean(ServiciosRepository.class);
-        Servicios cortePelo = new Servicios(null, "Corte de Pelo", 20d, 20);
-        Servicios corteBarba = new Servicios(null, "Corte de Barba", 15d, 20);
+        ServicioRepository serviciosRepository = context.getBean(ServicioRepository.class);
+        Servicio cortePelo = new Servicio(null, "Corte de Pelo", 20d, 20);
+        Servicio corteBarba = new Servicio(null, "Corte de Barba", 15d, 20);
         serviciosRepository.save(cortePelo);
         serviciosRepository.save(corteBarba);
 
@@ -67,8 +65,8 @@ public class AppBarbershopApplication {
         citasRepository.save(cita3);
 
         //EMPLEADOS
-        EmpleadosRepository empleadosRepository = context.getBean(EmpleadosRepository.class);
-        Empleados empleado1 = new Empleados(null, "Alberto", "Perez Sanchez", "alberto@gmail.com", null, "41/1234561210", "31666456R");
+        EmpleadoRepository empleadosRepository = context.getBean(EmpleadoRepository.class);
+        Empleado empleado1 = new Empleado(null, "Alberto", "Perez Sanchez", "alberto@gmail.com", null, "41/1234561210", "31666456R");
         empleadosRepository.save(empleado1);
 
         // CITAS - EMPLEADOS
@@ -76,28 +74,28 @@ public class AppBarbershopApplication {
         cita2.setEmpleados(empleado1);
         citasRepository.saveAll(List.of(cita1,cita2));
 
-        Servicios s1 = new Servicios(null,"Corte de pelo M",15.0,40);
-        Servicios s2 = new Servicios(null,"Corte de pelo F",30.0, 40);
-        Servicios s3 = new Servicios(null,"Corte de pelo M avance",20.0, 40);
-        Servicios s4 = new Servicios(null,"Corte de pelo San Valentín",20.0, 40);
+        Servicio s1 = new Servicio(null,"Corte de pelo M",15.0,40);
+        Servicio s2 = new Servicio(null,"Corte de pelo F",30.0, 40);
+        Servicio s3 = new Servicio(null,"Corte de pelo M avance",20.0, 40);
+        Servicio s4 = new Servicio(null,"Corte de pelo San Valentín",20.0, 40);
         serviciosRepository.saveAll(List.of(s1,s2,s3,s4));
 
-        Citas app1 = new Citas(null,LocalDateTime.of(2022,1,1,13,30),50,"");
+        Cita app1 = new Cita(null,LocalDateTime.of(2022,1,1,13,30),50,"");
         app1.setServicios(s1);
         app1.setCliente(cliente2);
         citasRepository.save(app1);
 
 
-        Citas app2 = new Citas(null,LocalDateTime.of(2022,1,14,16,30),50,"");
+        Cita app2 = new Cita(null,LocalDateTime.of(2022,1,14,16,30),50,"");
         app2.setServicios(s2);
         app2.setCliente(cliente2);
         citasRepository.save(app2);
 
-        Citas app3 = new Citas(null,LocalDateTime.of(2022,1,31,20,30),50,"");
+        Cita app3 = new Cita(null,LocalDateTime.of(2022,1,31,20,30),50,"");
         app3.setServicios(s3);
         citasRepository.save(app3);
 
-        Citas app4 = new Citas(null,LocalDateTime.of(2022,2,14,20,30),50,"");
+        Cita app4 = new Cita(null,LocalDateTime.of(2022,2,14,20,30),50,"");
         app4.setServicios(s4);
         citasRepository.save(app4);
 

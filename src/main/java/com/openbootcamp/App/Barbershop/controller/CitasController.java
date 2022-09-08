@@ -1,8 +1,8 @@
 package com.openbootcamp.App.Barbershop.controller;
 
 import com.openbootcamp.App.Barbershop.dto.BeneficiosDTO;
-import com.openbootcamp.App.Barbershop.entities.Citas;
-import com.openbootcamp.App.Barbershop.service.ServicioCitas;
+import com.openbootcamp.App.Barbershop.entities.Cita;
+import com.openbootcamp.App.Barbershop.service.CitaService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,11 +16,11 @@ import java.util.Optional;
 public class CitasController {
 
     //Atributo
-    private final ServicioCitas servicioCitas;
+    private final CitaService servicioCitas;
 
     //Constructor
 
-    public CitasController(ServicioCitas servicioCitas) {
+    public CitasController(CitaService servicioCitas) {
         this.servicioCitas = servicioCitas;
     }
 
@@ -33,22 +33,22 @@ public class CitasController {
      * Para éste caso la respuesta es la propia lista completa
      */
     @GetMapping("/citas")
-    public List<Citas> findAll(){
+    public List<Cita> findAll(){
         return servicioCitas.findAll();
     }
 
     @GetMapping("/citas/search/clientes/email/{email}")
-    public List<Citas> findAllByClienteEmail(@PathVariable String email){
+    public List<Cita> findAllByClienteEmail(@PathVariable String email){
         return servicioCitas.findAllByClienteEmail(email);
     }
 
     @GetMapping("/citas/search/empleados/dni/{dni}")
-    public List<Citas> findAllByDniEmpleados(@PathVariable String dni){
+    public List<Cita> findAllByDniEmpleados(@PathVariable String dni){
         return servicioCitas.findAllByDniEmpleados(dni);
     }
 
     @GetMapping("/citas/search/servicios/precio/{precio}")
-    public List<Citas> findAllByServiciosPrecioLessThanEqual(@PathVariable Double precio){
+    public List<Cita> findAllByServiciosPrecioLessThanEqual(@PathVariable Double precio){
         return servicioCitas.findAllByServiciosPrecioLessThanEqual(precio);
     }
 
@@ -57,10 +57,10 @@ public class CitasController {
      * @return
      */
     @GetMapping("/citas/{id}")
-    public ResponseEntity<Citas> findById(@PathVariable Long id){
+    public ResponseEntity<Cita> findById(@PathVariable Long id){
         //Como findById nos devuelve un optional, recogemos el dato con una variable optional
         //para poder trabajar con ella
-        Optional<Citas> citasOpt = servicioCitas.findById(id);
+        Optional<Cita> citasOpt = servicioCitas.findById(id);
         if(citasOpt.isPresent()){
             return ResponseEntity.ok(citasOpt.get());}
 
@@ -74,7 +74,7 @@ public class CitasController {
      * @return
      */
     @PostMapping("/citas")
-    public ResponseEntity<Citas> create(@RequestBody Citas cita){
+    public ResponseEntity<Cita> create(@RequestBody Cita cita){
         //comprobamos que la cita no esté creada
         if (cita.getId()!=null)
             return ResponseEntity.badRequest().build();
@@ -89,7 +89,7 @@ public class CitasController {
      * @return
      */
     @PutMapping("/citas")
-    public ResponseEntity<Citas> update(@RequestBody Citas cita){
+    public ResponseEntity<Cita> update(@RequestBody Cita cita){
         //comprobamos que la cita no esté creada
         if (cita.getId() == null)
             return ResponseEntity.badRequest().build();

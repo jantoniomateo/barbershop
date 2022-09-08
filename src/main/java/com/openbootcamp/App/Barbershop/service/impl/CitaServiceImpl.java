@@ -1,28 +1,30 @@
 package com.openbootcamp.App.Barbershop.service.impl;
 
-import com.openbootcamp.App.Barbershop.entities.Citas;
-import com.openbootcamp.App.Barbershop.repository.CitasRepository;
-import com.openbootcamp.App.Barbershop.service.ServicioCitas;
+import com.openbootcamp.App.Barbershop.entities.Cita;
+import com.openbootcamp.App.Barbershop.repository.CitaRepository;
+import com.openbootcamp.App.Barbershop.service.CitaService;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class ServicioCitasImpl implements ServicioCitas {
+public class CitaServiceImpl implements CitaService {
 
-    private final CitasRepository citasRepository;
+    private final CitaRepository citasRepository;
 
-    public ServicioCitasImpl(CitasRepository citasRepository) {
+    public CitaServiceImpl(CitaRepository citasRepository) {
         this.citasRepository = citasRepository;
     }
 
     @Override
-    public Optional<Citas> findById(Long id) {
+    public Optional<Cita> findById(Long id) {
         if (id == null || id <= 0)
             return Optional.empty();
 
@@ -30,12 +32,20 @@ public class ServicioCitasImpl implements ServicioCitas {
     }
 
     @Override
-    public List<Citas> findAll() {
+    public List<Cita> findAll() {
         return citasRepository.findAll();
     }
 
     @Override
-    public List<Citas> findAllByClienteEmail(String emailCliente) throws IllegalArgumentException {
+    public List<Cita> findAllById(List<Long> ids) {
+        if (CollectionUtils.isEmpty(ids))
+            return new ArrayList<>();
+
+        return citasRepository.findAllById(ids);
+    }
+
+    @Override
+    public List<Cita> findAllByClienteEmail(String emailCliente) throws IllegalArgumentException {
         if (!StringUtils.hasLength(emailCliente) && !emailCliente.contains("@"))
             throw new IllegalArgumentException(("Email incorrecto"));
 
@@ -43,7 +53,7 @@ public class ServicioCitasImpl implements ServicioCitas {
     }
 
     @Override
-    public List<Citas> findAllByDniEmpleados(String dni) {
+    public List<Cita> findAllByDniEmpleados(String dni) {
         if (!StringUtils.hasLength(dni))
             throw new IllegalArgumentException(("DNI Incorrecto"));
 
@@ -51,7 +61,7 @@ public class ServicioCitasImpl implements ServicioCitas {
     }
 
     @Override
-    public List<Citas> findAllByServiciosPrecioLessThanEqual(Double precio) {
+    public List<Cita> findAllByServiciosPrecioLessThanEqual(Double precio) {
         //between
         //if (min == null || max == null || min <=0 || max<=0 || min > max )
         //    throw new IllegalArgumentException("Rango de precios incorrecto");
@@ -105,12 +115,21 @@ public class ServicioCitasImpl implements ServicioCitas {
 
 
     @Override
-    public Citas save(Citas cita) throws IllegalArgumentException{
+    public Cita save(Cita cita) throws IllegalArgumentException{
         if (cita == null || cita.getFecha() == null)
             throw new IllegalArgumentException("Cita incorrecta");
         return citasRepository.save(cita);
 
     }
+
+    @Override
+    public List<Cita> saveAll(List<Cita> cita) {
+        if (!CollectionUtils.isEmpty(cita))  //CollectionUtils permite comprobar si la colección esta vacía.
+            return citasRepository.saveAll(cita); //si no está vacía, guardamos las citas.
+
+        return new ArrayList<>();  //si está vacía devolvemos un arraylist vacío.
+    }
+
 
     @Override
     public boolean deleteById(Long id) {
@@ -133,7 +152,7 @@ public class ServicioCitasImpl implements ServicioCitas {
      * @param citas lista de citas
      * @return beneficio total
      */
-    private Double extraerBeneficios(List<Citas> citas) {
+    private Double extraerBeneficios(List<Cita> citas) {
         return citas.stream().
                 filter(a -> a.getServicios() != null).
                 map(b -> b.getServicios().getPrecio()).

@@ -5,7 +5,7 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "servicios")
-public class Servicios implements Serializable {
+public class Servicio implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,9 +16,9 @@ public class Servicios implements Serializable {
 
 
     //constructores
-    public Servicios(){}
+    public Servicio(){}
 
-    public Servicios(Long id, String nombre, Double precio, Integer duracion) {
+    public Servicio(Long id, String nombre, Double precio, Integer duracion) {
         this.id = id;
         this.nombre = nombre;
         this.precio = precio;

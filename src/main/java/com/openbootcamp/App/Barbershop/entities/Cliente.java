@@ -1,5 +1,8 @@
 package com.openbootcamp.App.Barbershop.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -8,7 +11,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "clientes")
-public class Clientes implements Serializable {
+public class Cliente implements Serializable {
 
     //Atributos
 
@@ -35,14 +38,21 @@ public class Clientes implements Serializable {
     //asociaciones
     /* por defecto las asociaciones many son lazy (lazy significa que solo se recupera el dato de la base de datos cuando
     se accede al atributo*/
-
+    /*
+    indicamos que para cuando saquemos los datos de clientes, no nos saque de las citas de esos clientes
+    de nuevo los clientes asociados a esas citas para no estar duplicando información. El valor de JsonIgnoreProperties
+    es una array de datos por eso va entre llaves, y en éste caso sólo vamos a indicar que no incluya un único atributo
+    que es el de cliente. Ignora el cliente de la cita.
+     */
+    //@JsonIgnore //ignora la lista de citas y solo sacaría los datos del cliente realizando solo una consulta de hibernate.
+    @JsonIgnoreProperties (value = {"cliente"})
     @OneToMany(mappedBy = "cliente")
-    private List<Citas> citas = new ArrayList<>();
+    private List<Cita> citas = new ArrayList<>();
 
     //constructores
-    public Clientes(){}
+    public Cliente(){}
 
-    public Clientes(Long id, String nombre, String apellidos, String email, LocalDate fechaNacimiento) {
+    public Cliente(Long id, String nombre, String apellidos, String email, LocalDate fechaNacimiento) {
         this.id = id;
         this.nombre = nombre;
         this.apellidos = apellidos;
@@ -92,11 +102,11 @@ public class Clientes implements Serializable {
         this.fechaNacimiento = fechaNacimiento;
     }
 
-    public List<Citas> getCitas() {
+    public List<Cita> getCitas() {
         return citas;
     }
 
-    public void setCitas(List<Citas> citas) {
+    public void setCitas(List<Cita> citas) {
         this.citas = citas;
     }
 
