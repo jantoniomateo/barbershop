@@ -56,6 +56,12 @@ public class ClienteServiceImpl implements ClienteService {
             }
 
             clienteDB.setCitas(citaService.saveAll(citas));
+
+            //Desasociamos las citas que no están en el update.
+            List<Cita> citasDesasociadas =citaService.findAllByIdNotInAndClienteId(ids, clienteDB.getId());
+            citasDesasociadas.forEach(app -> app.setCliente(null));
+            citaService.saveAll(citasDesasociadas);
+
             return clienteDB;
         }
 
@@ -63,6 +69,14 @@ public class ClienteServiceImpl implements ClienteService {
         public boolean deleteById(Long id) {
             if(id == null || !clienteRepository.existsById(id))
                 return false;
+
+            //desasociamos las citas antes de borrar el cliente, para que nos permita su borrado debido a la asociación
+            //que tenemos realizada, de tal forma que mientras existan citas apuntando a un cliente, no van a dejarnos
+            //borrar dicho cliente.
+
+            List<Cita> citasDesasociadas =citaService.findAllByClienteId(id);
+            citasDesasociadas.forEach(app -> app.setCliente(null));
+            citaService.saveAll(citasDesasociadas);
 
             clienteRepository.deleteById(id);
             return true;

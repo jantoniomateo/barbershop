@@ -1,13 +1,7 @@
 package com.openbootcamp.App.Barbershop;
 
-import com.openbootcamp.App.Barbershop.entities.Cita;
-import com.openbootcamp.App.Barbershop.entities.Cliente;
-import com.openbootcamp.App.Barbershop.entities.Empleado;
-import com.openbootcamp.App.Barbershop.entities.Servicio;
-import com.openbootcamp.App.Barbershop.repository.CitaRepository;
-import com.openbootcamp.App.Barbershop.repository.ClienteRepository;
-import com.openbootcamp.App.Barbershop.repository.EmpleadoRepository;
-import com.openbootcamp.App.Barbershop.repository.ServicioRepository;
+import com.openbootcamp.App.Barbershop.entities.*;
+import com.openbootcamp.App.Barbershop.repository.*;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
@@ -68,6 +62,8 @@ public class AppBarbershopApplication {
         EmpleadoRepository empleadosRepository = context.getBean(EmpleadoRepository.class);
         Empleado empleado1 = new Empleado(null, "Alberto", "Perez Sanchez", "alberto@gmail.com", null, "41/1234561210", "31666456R");
         empleadosRepository.save(empleado1);
+        Empleado empleado2 = new Empleado(null, "Fernando", "Lobato Lopez", "fernando@gmail.com", null, "41/1234561444", "31689456R");
+        empleadosRepository.save(empleado2);
 
         // CITAS - EMPLEADOS
         cita1.setEmpleados(empleado1);
@@ -99,9 +95,20 @@ public class AppBarbershopApplication {
         app4.setServicios(s4);
         citasRepository.save(app4);
 
+        // DIRECCION
+        DireccionRepository direccionRepository = context.getBean(DireccionRepository.class);
+        Direccion dir1 = new Direccion(null,"Calle Santiago 3", "11130","Chiclana de la  Frontera", "España");
+        // direccionRepository.save(dir1); //    @OneToOne(cascade = CascadeType.ALL) en empleado guarda también la direccion.
+        Direccion dir2 = new Direccion(null,"Calle Nueva 1", "11130","Chiclana de la  Frontera", "España");
+        direccionRepository.save(dir2);
 
+        Empleado empleado3= new Empleado(null, "Antonio", "Marquez Lopez", "antonio@gmail.com", null, "41/45678910", "47523625W");
+        empleado3.setDireccion(dir1);
+        empleadosRepository.save(empleado3);
 
-
+        //Empleado empleado4= new Empleado(null, "Alberto", "Jimenez Redondo", "redondo@gmail.com", null, "41/8956253", "123456789A");
+        //empleado4.setDireccion(dir1);
+        //empleadosRepository.save(empleado4);
     }
 
 }

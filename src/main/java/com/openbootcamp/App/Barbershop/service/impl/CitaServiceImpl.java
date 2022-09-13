@@ -45,6 +45,16 @@ public class CitaServiceImpl implements CitaService {
     }
 
     @Override
+    public List<Cita> findAllByIdNotInAndClienteId(List<Long> ids, Long id) {
+        if (id == null || id <=0)    //Si el cliente es nulo, automaticamente me salgo creado un array vacío.
+                return new ArrayList<>();
+        if (ids == null)            // Si las citas son nulsa, inicializo un array vacío y sigo adelante.
+            ids = new ArrayList<>();
+
+        return citasRepository.findAllByIdNotInAndClienteId(ids, id);
+    }
+
+    @Override
     public List<Cita> findAllByClienteEmail(String emailCliente) throws IllegalArgumentException {
         if (!StringUtils.hasLength(emailCliente) && !emailCliente.contains("@"))
             throw new IllegalArgumentException(("Email incorrecto"));
@@ -72,6 +82,27 @@ public class CitaServiceImpl implements CitaService {
         return citasRepository.findAllByServiciosPrecioLessThanEqual(precio);
     }
 
+    @Override
+    public List<Cita> findAllByClienteId(Long id) {
+        if (id == null || id <=0)    //Si el cliente es nulo, automaticamente me salgo creado un array vacío.
+            return new ArrayList<>();
+        return citasRepository.findAllByClienteId(id);
+    }
+
+    @Override
+    public List<Cita> findAllByEmpleadosId(Long id) {
+        if (id == null || id <=0)    //Si el empleado es nulo, automaticamente me salgo creado un array vacío.
+            return new ArrayList<>();
+
+        return citasRepository.findAllByEmpleadosId(id);
+    }
+
+    public List<Cita> findAllByServiciosId(Long id){
+        if (id == null || id <=0)    //Si el servicio es nulo, automaticamente me salgo creado un array vacío.
+            return new ArrayList<>();
+
+        return citasRepository.findAllByServiciosId(id);
+    }
     @Override
     public double calcularBeneficioPorDia(LocalDate dia) {
         if (dia == null)

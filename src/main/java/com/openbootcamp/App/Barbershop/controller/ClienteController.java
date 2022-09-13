@@ -76,7 +76,7 @@ public class ClienteController {
      * @param Cliente
      * @return
      */
-    @PutMapping("/Clientes")
+    @PutMapping("/clientes")
     public ResponseEntity<Cliente> update(@RequestBody Cliente Cliente){
         //comprobamos que la Cliente no esté creada
         if (Cliente.getId() == null)
@@ -89,7 +89,7 @@ public class ClienteController {
      * Borra de Cliente por id
     * DELETE http://api/Clientes
     */
-    @DeleteMapping("/Clientes/{id}")
+    @DeleteMapping("/clientes/{id}")
     public ResponseEntity<Void> deleteById(@PathVariable Long id){
         boolean resultado = clienteService.deleteById(id);
         if (resultado)

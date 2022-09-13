@@ -1,18 +1,24 @@
 package com.openbootcamp.App.Barbershop.service.impl;
 
+import com.openbootcamp.App.Barbershop.entities.Cita;
 import com.openbootcamp.App.Barbershop.entities.Servicio;
 import com.openbootcamp.App.Barbershop.repository.ServicioRepository;
+import com.openbootcamp.App.Barbershop.service.CitaService;
 import com.openbootcamp.App.Barbershop.service.ServicioService;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class ServicioServiceImpl implements ServicioService {
 
     private final ServicioRepository serviciosRepository;
+    private final CitaService citaService;
 
-    public ServicioServiceImpl(ServicioRepository serviciosRepository) {
+    public ServicioServiceImpl(ServicioRepository serviciosRepository, CitaService citaService) {
         this.serviciosRepository = serviciosRepository;
+        this.citaService = citaService;
     }
 
     @Override
@@ -39,6 +45,11 @@ public class ServicioServiceImpl implements ServicioService {
     public boolean deleteById(Long id) {
         if(id == null || !serviciosRepository.existsById(id))
             return false;
+
+        //Desasociar citas antes de borrar servicios de corte de pelo
+        List<Cita> citasDesasociadas =citaService.findAllByServiciosId(id);
+        citasDesasociadas.forEach(app -> app.setServicios(null));
+        citaService.saveAll(citasDesasociadas);
 
         serviciosRepository.deleteById(id);
         return true;
