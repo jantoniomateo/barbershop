@@ -55,22 +55,26 @@ public class EmpleadoServiceImpl implements EmpleadoService {
         if (empleado == null || !StringUtils.hasLength(empleado.getEmail()))
             throw new IllegalArgumentException("Email incorrecto");
 
-        if(empleado.getDireccion() != null && empleado.getDireccion().getId() != null){
-
+        if(empleado.getDireccion() == null && empleado.getDireccion().getId() == null)
+            return empleadoRepository.save(empleado);
+        
             Optional<Direccion> direccionOpt = direccionService.findById(empleado.getDireccion().getId());
-            if (direccionOpt.isPresent()){
-                Direccion direccion = direccionOpt.get();
-                direccion.setCalle(StringUtils.hasLength(empleado.getDireccion().getCalle()) ? empleado.getDireccion().getCalle() : direccion.getCalle());
-                direccion.setCiudad(StringUtils.hasLength(empleado.getDireccion().getCiudad()) ? empleado.getDireccion().getCiudad() : direccion.getCiudad());
-                direccion.setCodigoPostal(StringUtils.hasLength(empleado.getDireccion().getCodigoPostal()) ? empleado.getDireccion().getCodigoPostal() : direccion.getCodigoPostal());
-                direccion.setPais(StringUtils.hasLength(empleado.getDireccion().getPais()) ? empleado.getDireccion().getPais() : direccion.getPais());
-                empleado.setDireccion(direccion);
-            }else {
+            if (direccionOpt.isEmpty() || empleadoRepository.existsByDireccionId(empleado.getDireccion().getId())) {
                 empleado.setDireccion(null);
+                return empleadoRepository.save(empleado);
             }
+
+            // Si existe la dirección añadela al empleado y en caso en el que se hayan añadido datos que los cambie
+            // por los nuevos datos aportados.
+            Direccion direccion = direccionOpt.get();
+            direccion.setCalle(StringUtils.hasLength(empleado.getDireccion().getCalle()) ? empleado.getDireccion().getCalle() : direccion.getCalle());
+            direccion.setCiudad(StringUtils.hasLength(empleado.getDireccion().getCiudad()) ? empleado.getDireccion().getCiudad() : direccion.getCiudad());
+            direccion.setCodigoPostal(StringUtils.hasLength(empleado.getDireccion().getCodigoPostal()) ? empleado.getDireccion().getCodigoPostal() : direccion.getCodigoPostal());
+            direccion.setPais(StringUtils.hasLength(empleado.getDireccion().getPais()) ? empleado.getDireccion().getPais() : direccion.getPais());
+            empleado.setDireccion(direccion);
+            return empleadoRepository.save(empleado);
         }
-        return empleadoRepository.save(empleado);
-    }
+
 
     @Override
     public boolean deleteById(Long id) {

@@ -1,12 +1,10 @@
 package com.openbootcamp.App.Barbershop.service.impl;
 
-import com.openbootcamp.App.Barbershop.entities.Cita;
 import com.openbootcamp.App.Barbershop.entities.Direccion;
 import com.openbootcamp.App.Barbershop.repository.DireccionRepository;
 import com.openbootcamp.App.Barbershop.service.CitaService;
 import com.openbootcamp.App.Barbershop.service.DireccionService;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.Optional;
@@ -15,11 +13,9 @@ import java.util.Optional;
 public class DireccionServiceImpl implements DireccionService {
 
     private final DireccionRepository direccionRepository;
-    private final CitaService citaService;
 
-    public DireccionServiceImpl(DireccionRepository direccionRepository, CitaService citaService) {
+    public DireccionServiceImpl(DireccionRepository direccionRepository) {
         this.direccionRepository = direccionRepository;
-        this.citaService = citaService;
     }
 
     @Override
